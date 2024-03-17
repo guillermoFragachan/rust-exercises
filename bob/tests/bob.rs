@@ -40,49 +40,49 @@ fn shouting_with_special_characters() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// talking forcefully
 fn talking_forcefully() {
     process_response_case("Hi there!", "Whatever.");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// prattling on
 fn prattling_on() {
     process_response_case("Wait! Hang on. Are you going to be OK?", "Sure.");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// forceful question
 fn forceful_question() {
     process_response_case("WHAT'S GOING ON?", "Calm down, I know what I'm doing!");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// shouting with no exclamation mark
 fn shouting_with_no_exclamation_mark() {
     process_response_case("I HATE THE DENTIST", "Whoa, chill out!");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// asking gibberish
 fn asking_gibberish() {
     process_response_case("fffbbcbeab?", "Sure.");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// question with no letters
 fn question_with_no_letters() {
     process_response_case("4?", "Sure.");
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 /// no letters
 fn no_letters() {
     process_response_case("1, 2, 3", "Whatever.");
