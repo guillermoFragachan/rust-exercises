@@ -12,41 +12,29 @@ fn convert_rows_into_characters(rows: &str, student: &str) -> Vec<&'static str> 
 
     let rows: Vec<&str> = rows.split("\n").collect();
 
-    println!("{}", rows[0]);
-
-    let plant_column1 = divide_string(rows[0]);
-
-    let plants_column2 = divide_string(rows[1]);
-
-    for (i, students) in STUDENTS.iter().enumerate() {
-        // plant_row = the
-        if student.to_string() == students.to_string() {
-            let chars = plant_column1[i].chars();
-
-            for char in chars {
-                let object = Plant::from_char(char).unwrap();
-                let plant = Plant::to_string(object);
-                plants.push(plant)
-            }
-        }
+    for row in rows {
+        iterate_students(student, divide_string(row), &mut plants);
     }
-
-    for (i, students) in STUDENTS.iter().enumerate() {
-        // plant_row = the
-        if student.to_string() == students.to_string() {
-            let chars = plants_column2[i].chars();
-
-            for char in chars {
-                let object = Plant::from_char(char).unwrap();
-                let plant = Plant::to_string(object);
-                plants.push(plant)
-            }
-        }
-    }
-
-
-
     plants
+}
+
+fn iterate_students(student: &str, row: Vec<&str>, plants: &mut Vec<&str>) {
+    for (i, students) in STUDENTS.iter().enumerate() {
+        // plant_row = the
+        if student.to_string() == students.to_string() {
+            get_plats(&row, i, plants);
+        }
+    }
+}
+
+fn get_plats(column: &Vec<&str>, i: usize, plants: &mut Vec<&str>) {
+    let chars = column[i].chars();
+
+    for char in chars {
+        let object = Plant::from_char(char).unwrap();
+        let plant = Plant::to_string(object);
+        plants.push(plant)
+    }
 }
 fn divide_string(s: &str) -> Vec<&str> {
     s.as_bytes()
