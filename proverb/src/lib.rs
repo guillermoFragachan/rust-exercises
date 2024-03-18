@@ -54,7 +54,7 @@ fn reverse_vector (list: &[&str]) -> Vec<String> {
 
 
 // #[test]
-// #[ignore]
+// //#[ignore]
 // fn two_pieces() {
 //     let input = &["nail", "shoe"];
 //     let output = proverb::build_proverb(input);
