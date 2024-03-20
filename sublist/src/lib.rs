@@ -20,11 +20,10 @@ pub fn sublist<T: PartialEq + ToString >(list1: &[T], list2: &[T]) -> Comparison
        return Comparison::Equal
     }
     else if list1.len() < list2.len() {
-        println!("{:?} {:?} {} sublist", arrayter(list1), arrayter(list2),list1.iter().all(|c| list2.contains(c))  );
 
-        if !list1.iter().any(|c| list2.contains(c)) {
+        if !is_subsequence(list1, list2) {
 
-            return Comparison::Unequal;
+                return Comparison::Unequal;
         }
         return Comparison::Sublist
     }
@@ -51,21 +50,47 @@ fn arrayter<T: PartialEq + ToString>(list1: &[T]) -> Vec<String> {
 fn calculate_eq<T: PartialEq>(list1: &[T], list2: &[T]) -> bool {
     list1.iter().all(|element| list2.contains(element))
 }
-fn first_list_contains_all <T: PartialEq>(list1: &[T], list2: &[T]) -> bool {
-    list1.iter().any(|c| list2.contains(c)) 
+fn check_order_form_list <T: PartialEq+ ToString>(list1: &[T], list2: &[T]) -> bool {
+    let arr: Vec<String> = arrayter(list1);
+    let arr2 = arrayter(list2);
+
+    let mut positions: Vec<u32>  =Vec::new();
+    for (i, val) in arr.iter().enumerate(){
+        let position  = arr2.iter().position(|x| x == val).unwrap();
+        let is = &arr[i];
+
+        positions.push(position as u32);
+    
+        println!("{}",  position );
+
+    }
+    let mut index: u32 = positions[0];
+    let mut boolean = true;
+    let _ = positions.iter().map(|c: &u32| {
+
+        if index == 0 {
+         return   index = c.to_be();
+        }
+        if(index ==1) {
+            return index = c - index;
+        }
+        let var_name = boolean == false;
+        // return var_name;
+    });
+
+    return boolean
  }
 
 
-fn return_larger_list<'a, T: PartialEq> (list1: &'a [T], list2: &'a [T]) -> &'a [T] {
-    if list1.len() > list2.len() {
-        return list1;
-    }
-    return list2;
-}
+ pub fn is_subsequence<T: PartialEq + ToString>(list1: &[T], list2: &[T]) -> bool {
+    let stringified = arrayter(list1).concat();
+    let stringified2 = arrayter(list2).concat();
 
-fn return_smaller_list<'a, T: PartialEq> (list1: &'a [T], list2: &'a [T]) -> &'a [T] {
-    if list1.len() < list2.len() {
-        return list1;
-    }
-    return list2;
+    let boolean  = stringified2.contains(&stringified);
+
+    println!("d{} d{} d{}", stringified , stringified2 , boolean);
+
+    return boolean
+
+   
 }
