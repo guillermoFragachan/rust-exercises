@@ -140,7 +140,7 @@ fn first_list_missing_element_from_second_list() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn second_list_missing_element_from_first_list() {
     let list_one: &[i32] = &[1, 2, 3];
     let list_two: &[i32] = &[1, 3];
@@ -150,7 +150,7 @@ fn second_list_missing_element_from_first_list() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn first_list_missing_additional_digits_from_second_list() {
     let list_one: &[i32] = &[1, 2];
     let list_two: &[i32] = &[1, 22];
@@ -160,7 +160,7 @@ fn first_list_missing_additional_digits_from_second_list() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn order_matters_to_a_list() {
     let list_one: &[i32] = &[1, 2, 3];
     let list_two: &[i32] = &[3, 2, 1];
@@ -170,7 +170,7 @@ fn order_matters_to_a_list() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn same_digits_but_different_numbers() {
     let list_one: &[i32] = &[1, 0, 1];
     let list_two: &[i32] = &[10, 1];

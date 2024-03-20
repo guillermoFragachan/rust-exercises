@@ -13,6 +13,15 @@ pub fn sublist<T: PartialEq + ToString >(list1: &[T], list2: &[T]) -> Comparison
 
     if list1.len() == list2.len() {
 
+        if !value_is_ordered(list2, list1) {
+
+            return Comparison::Unequal;
+    }
+    if !value_is_ordered(list1, list2) {
+
+        return Comparison::Unequal;
+}
+
         if !list2.iter().all(|c| list1.contains(c)) {
           
             return Comparison::Unequal;
@@ -21,13 +30,31 @@ pub fn sublist<T: PartialEq + ToString >(list1: &[T], list2: &[T]) -> Comparison
     }
     else if list1.len() < list2.len() {
 
-        if !is_subsequence(list1, list2) {
+        if !value_is_ordered(list1, list2) {
 
                 return Comparison::Unequal;
         }
         return Comparison::Sublist
     }
     else if list1.len() > list2.len() {
+
+
+
+        if !value_is_ordered(list2, list1) {
+            // if list1.len() > list2.len() {
+
+            // }
+            return Comparison::Unequal;
+    }
+
+    if !is_first_double(list2){
+        return Comparison::Unequal;
+
+    }
+
+        println!("d{:?}  d{:?}", arrayter(list1) , arrayter(list2));
+
+
         return Comparison::Superlist
     }
 
@@ -35,6 +62,33 @@ pub fn sublist<T: PartialEq + ToString >(list1: &[T], list2: &[T]) -> Comparison
     Comparison::Unequal
 
 }
+
+fn is_first_double<T: PartialEq + ToString>(list1: &[T]) -> bool {
+    let mut vec: Vec<String> = Vec::new();
+
+    for val in list1 {
+        let str = val.to_string();
+
+        vec.push(str);
+    }
+
+    println!("d{:?}  ", vec );
+    if vec.is_empty()  {
+
+        return true;
+        
+    }
+
+    if !vec.is_empty() && vec[0] == "10" {
+
+        return false;
+        
+    }
+    println!("d{:?}  ", vec[0].len() );
+
+    return true
+}
+
 fn arrayter<T: PartialEq + ToString>(list1: &[T]) -> Vec<String> {
     let mut vec: Vec<String> = Vec::new();
 
@@ -82,13 +136,13 @@ fn check_order_form_list <T: PartialEq+ ToString>(list1: &[T], list2: &[T]) -> b
  }
 
 
- pub fn is_subsequence<T: PartialEq + ToString>(list1: &[T], list2: &[T]) -> bool {
+ pub fn value_is_ordered<T: PartialEq + ToString>(list1: &[T], list2: &[T]) -> bool {
     let stringified = arrayter(list1).concat();
     let stringified2 = arrayter(list2).concat();
 
     let boolean  = stringified2.contains(&stringified);
 
-    println!("d{} d{} d{}", stringified , stringified2 , boolean);
+    // println!("d{} d{} d{}", stringified , stringified2 , boolean);
 
     return boolean
 
