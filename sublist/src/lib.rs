@@ -66,6 +66,8 @@ pub fn sublist<T: PartialEq + ToString >(list1: &[T], list2: &[T]) -> Comparison
 fn is_first_double<T: PartialEq + ToString>(list1: &[T]) -> bool {
     let mut vec: Vec<String> = Vec::new();
 
+    
+
     for val in list1 {
         let str = val.to_string();
 
