@@ -1,118 +1,164 @@
+#[derive(PartialEq)]
+enum Outcome {
+    Lost = 0,
+    DRAW = 1,
+    Win = 3,
+}
+
+enum PlayerIndex {
+    FIRST,
+    SECOND,
+}
+// let tab_string = "\t".repeat(7);
+// let my_string = format!("Hello{}World", tab_string);
+
 pub fn tally(match_results: &str) -> String {
-  
-  
-  let teams = match_results.split('\n').collect::<Vec<&str>>();
+    let games_played = match_results.split('\n').collect::<Vec<&str>>();
 
-  let mut vec: Vec<String> = Vec::new();
+    let mut vec: Vec<String> = Vec::new();
+    for game in games_played {
+        if !game.contains(";") {
+            break;
+        }
 
+        let scores = find_game_outcome(game);
 
-
-  
-
-
-  for team in teams {
-
+        let mut results: Vec<u32> = vec![0, 0, 0, 0, 0];
 
 
-    if !team.contains(";") {
-      break;
+        let winner_results = get_results(scores.first_player, results.clone());
+        let loser_results =  get_results(scores.second_player, results.clone());
+
+        vec.push(winner_results);
+        vec.push(loser_results);
+        println!("{:?} 2", vec.clone());
     }
 
+    vec.sort_by(|a, b| {
+        let a_last = a.split_whitespace().last().unwrap().parse::<i32>().unwrap();
+        let b_last = b.split_whitespace().last().unwrap().parse::<i32>().unwrap();
+        b_last.cmp(&a_last)
+    });
+    vec.insert(0 ,"Team                           | MP |  W |  D |  L |  P".to_string());
 
-    let outcome = find_game_outcome(team);
-
-
-    let mut results: Vec<u32> = [0, 0, 0, 0, 0].to_vec();
-
-    let winner = find_winner(team, outcome);
-    let loser = find_winner(team, !outcome);
-    let winner_results = get_results(winner, true,results);
-    vec.push(value);
-    let loser_results = get_results(loser, true, results);
-
-    
-    
-
-    println!("{} won", winner);
-
-    println!("{} lost", loser);
-
-  }
-
-  
-  let headers = "Team                           | MP |  W |  D |  L |  P".to_string();
-  
-
-  return vec.join("\n");
+    return vec.join("\n");
 
 }
 
 // A win earns a team 3 points. A draw earns 1. A loss earns 0.
+struct Player {
+    name: String,
+    points: i32,
+    outcome: Outcome
+}
+struct PlayerScores {
+    first_player: Player,
+    second_player: Player,
+}
+fn get_results(player: Player, mut results: Vec<u32>) -> String {
+    let new_match: u32 = 1;
+    results[0] = results[0] + new_match;
 
 
+    match player.outcome {
+        Outcome::Win => {
+            results[1] = results[1] + new_match;
+            results[4] = results[4] + 3;
+        },
+        Outcome::Lost => {
+            results[3] = results[3] + new_match;
 
+            results[4] = results[4];
+        },
+        Outcome::DRAW => {
+            results[2] = results[2] + new_match;
+            results[4] = results[4] + 1;
+        }
+    }
 
-fn get_results (player: String, won: bool, results:Vec<u32> ) -> String {
-
-  let winner_points: u32 = 3;
-  let _draw_points: u32 = 1;
-
-  let new_match : u32= 1;
-  let _draw_matchh: u32 = 1;
-
-
-  let _ = results[0] + new_match;
-
-  if won {
-    let _ = results[1] + new_match;
-    // results[2] + new_match;
-    let _ = results[4] + winner_points;
-
-    let result_row = format!("{:<30} | {:^2} | {:^2} | {:^2} | {:^2} | {:^2}",
-    player, results[0], results[1], results[2], results[3], results[4]);
-
-    return result_row
-  }
-
-  let _ = results[3] + new_match;
-
-  let result_row = format!("{:<30} | {:^2} | {:^2} | {:^2} | {:^2} | {:^2}",
-  player, results[0], results[1], results[2], results[3], results[4]);
-
-  return result_row
+    let result_row = format!(
+        "{:<30} |  {:^2}|  {:^2}|  {:^2}|  {:^2}|  {:^1}",
+        player.name, results[0], results[1], results[2], results[3], results[4]
+    );
+    println!("{:?} won", result_row);
+    return result_row;
 }
 
+fn get_team_by_index(game: &str, i: PlayerIndex) -> String {
+    let split_string = game.split(";").collect::<Vec<&str>>();
+    let index = match i {
+        PlayerIndex::FIRST => 0,
+        PlayerIndex::SECOND => 1,
+    };
 
-fn find_winner(row: &str, outcome:bool)  ->  String{ 
-  let split_string = row.split(";").collect::<Vec<&str>>();
-
-  println!("{:?}", split_string);
-
-  if outcome == true {
-  println!("{:?}", split_string);
-
-   return split_string[0].to_string();
-  }
-
-return split_string[1].to_string();
-
+    return split_string[index].to_string();
 }
-
-fn find_game_outcome (row: &str)  -> bool {
-
+fn find_winner(row: &str, outcome: bool) -> String {
     let split_string = row.split(";").collect::<Vec<&str>>();
 
-  println!("{:?}", split_string);
+    println!("{:?}", split_string);
 
-  let outcome = split_string[2];
+    if outcome == true {
+        println!("{:?}", split_string);
 
+        return split_string[0].to_string();
+    }
 
+    return split_string[1].to_string();
+}
 
-  if outcome == "win" {
-    return true
-  }
+fn find_game_outcome(game: &str) -> PlayerScores {
+    let split_string = game.split(";").collect::<Vec<&str>>();
+    let first_player = split_string[0].to_string();
+    let second_player = split_string[1].to_string();
+    // let first_team = get_team_by_index(game, PlayerIndex::FIRST);
+    // let second_r= get_team_by_index(game, PlayerIndex::SECOND);
+    let outcome = match split_string[2] {
+        "win" => Outcome::Win,
+        "draw" => Outcome::DRAW,
+        _ => Outcome::Lost,
+    };
 
-  return false
+    let points: PlayerScores = match outcome {
+        Outcome::Win => PlayerScores {
+            first_player: Player {
+                name: first_player,
+                points: 3,
+                outcome: Outcome::Win
+            },
+            second_player: Player {
+                name: second_player,
+                points: 0,
+                outcome: Outcome::Lost
+            }
+        },
+        Outcome::Lost =>PlayerScores {
+            first_player: Player {
+                name: first_player,
+                points: 0,
+                outcome: Outcome::Lost
+            },
+            second_player: Player {
+                name: second_player,
+                points: 3,
+                outcome: Outcome::Win
+            }
+        },
+        Outcome::DRAW => PlayerScores {
+            first_player: Player {
+                name: first_player,
+                points: 1,
+                outcome: Outcome::DRAW
+            },
+            second_player: Player {
+                name: second_player,
+                points: 0,
+                outcome: Outcome::DRAW
+            }
+        },
+    };
+
+    return points
 }
 
 // fn main() {

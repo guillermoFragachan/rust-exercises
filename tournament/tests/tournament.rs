@@ -23,7 +23,7 @@ fn a_win_is_three_points_a_loss_is_zero_points() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn a_win_can_also_be_expressed_as_a_loss() {
     let input: &[&str] = &["Blithering Badgers;Allegoric Alaskans;loss"];
     let input = input.join("\n");
@@ -38,7 +38,7 @@ fn a_win_can_also_be_expressed_as_a_loss() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn a_different_team_can_win() {
     let input: &[&str] = &["Blithering Badgers;Allegoric Alaskans;win"];
     let input = input.join("\n");
@@ -53,7 +53,7 @@ fn a_different_team_can_win() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn a_draw_is_one_point_each() {
     let input: &[&str] = &["Allegoric Alaskans;Blithering Badgers;draw"];
     let input = input.join("\n");
@@ -68,7 +68,7 @@ fn a_draw_is_one_point_each() {
 }
 
 #[test]
-#[ignore]
+// #[ignore]
 fn there_can_be_more_than_one_match() {
     let input: &[&str] = &[
         "Allegoric Alaskans;Blithering Badgers;win",
