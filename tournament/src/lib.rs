@@ -3,7 +3,7 @@ pub fn tally(match_results: &str) -> String {
   
   let teams = match_results.split('\n').collect::<Vec<&str>>();
 
-  let mut vec = Vec::new();
+  let mut vec: Vec<String> = Vec::new();
 
 
 
@@ -22,11 +22,15 @@ pub fn tally(match_results: &str) -> String {
     let outcome = find_game_outcome(team);
 
 
-    let mut results: Vec<String> = Vec::with_capacity(5);
+    let mut results: Vec<u32> = [0, 0, 0, 0, 0].to_vec();
 
     let winner = find_winner(team, outcome);
     let loser = find_winner(team, !outcome);
+    let winner_results = get_results(winner, true,results);
+    vec.push(value);
+    let loser_results = get_results(loser, true, results);
 
+    
     
 
     println!("{} won", winner);
@@ -43,14 +47,42 @@ pub fn tally(match_results: &str) -> String {
 
 }
 
-fn get_results (winner: String, loser: String, results:Vec<String> )  {
+// A win earns a team 3 points. A draw earns 1. A loss earns 0.
+
+
+
+
+fn get_results (player: String, won: bool, results:Vec<u32> ) -> String {
+
+  let winner_points: u32 = 3;
+  let _draw_points: u32 = 1;
+
+  let new_match : u32= 1;
+  let _draw_matchh: u32 = 1;
+
+
+  let _ = results[0] + new_match;
+
+  if won {
+    let _ = results[1] + new_match;
+    // results[2] + new_match;
+    let _ = results[4] + winner_points;
+
+    let result_row = format!("{:<30} | {:^2} | {:^2} | {:^2} | {:^2} | {:^2}",
+    player, results[0], results[1], results[2], results[3], results[4]);
+
+    return result_row
+  }
+
+  let _ = results[3] + new_match;
 
   let result_row = format!("{:<30} | {:^2} | {:^2} | {:^2} | {:^2} | {:^2}",
-    team, results[i][0], results[i][1], results[i][2], results[i][3], results[i][4]);
+  player, results[0], results[1], results[2], results[3], results[4]);
 
-
-    
+  return result_row
 }
+
+
 fn find_winner(row: &str, outcome:bool)  ->  String{ 
   let split_string = row.split(";").collect::<Vec<&str>>();
 
